@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import forms
 
 app = Flask(__name__)
 
@@ -10,11 +11,44 @@ def index():
 
 @app.route('/distancia')
 def distancia():
-    return render_template('index.html')
+    if request.method =='POST':
+        x1=request.form['numero1']
+        x2=request.form['numero2']
+        suma = int(numero1) + int(numero2)
+        return render_template('distancia.html' ,res=res, numero1=numero1, numero2=numero2) 
+    return render_template('distancia.html')
 
-@app.route('/calculos')
+@app.route('/calculos', methods=['GET','POST'])
 def calculos():
+    if request.method =='POST':
+        numero1=request.form['numero1']
+        numero2=request.form['numero2']
+        suma = int(numero1) + int(numero2)
+        opcion = request.form['operacion']
+        if opcion == 'suma':
+            res = int(numero1) + int(numero2)
+        if opcion == 'resta': 
+           res = int(numero1) - int(numero2)
+        if opcion == 'multplicación':
+            res =int(numero1) * int(numero2)
+        if opcion == 'división':
+            res= int(numero1) / int(numero2)
+        return render_template('calculos.html' ,res=res, numero1=numero1, numero2=numero2) 
     return render_template('calculo.html')
+
+@app.route('/Alumnos', methods=["GET","POST"])
+def alumnos():
+    mat=0
+    nom=""
+    ape=""
+    email=""
+    alumno_clas=forms.UserForm(request.form)
+    if request.method == 'POST' and alumno_clas.validate():
+        mat=alumno_clas.matricula.data
+        nom=alumno_clas.nombre.data
+        ape=alumno_clas.apellido.data
+        email=alumno_clas.correo.data
+    return render_template('Alumnos.html', form=alumno_clas, mat=mat, nom=nom, ape=ape, email=email)
 
 @app.route('/')
 def home():

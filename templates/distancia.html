@@ -1,6 +1,31 @@
 {% extends "layout.html" %}
-    {% block contaniner %}
+    {%block container %}
+    {% import "_macros.html" as datos_macro %}
 
-    <h1> Distancia</h1>
+    <h1> Calculo </h1>
+    <form action="" method="post">
+            {{datos_macro.datos('X1','ingrese el numero X1')}}
+            {{datos_macro.datos('X2','ingrese el numero X2')}}
+            {{datos_macro.datos('Y1','ingrese el numero Y1')}}
+            {{datos_macro.datos('Y2','ingrese el numero Y2')}}
+        <div class="mb-3">
+            <label for="operacion" class="form-label">Operacion</label>
+            <select class="form-select" id="operacion" name="operacion">
+                <option value="suma">Suma</option>
+                <option value="resta">Resta</option>
+                <option value="multiplicación">Multiplicación</option>
+                <option value="division">Division</option>
+            </select>
+        </div>
+
+        <button type ="submit" class="btn btn-primary">Calcular</button>
+
+
+
+    </form>
+
+    <h1> el resultado es: {{res}}        <h1>
     
+
+
     {% endblock %}

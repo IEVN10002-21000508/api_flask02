@@ -3,22 +3,23 @@
 {% block container %}
     <h1> Calculo </h1>
     <form action="" method="post">
-            {{datos_macro.datos('numero1','ingrese el numero 1')}}
+            {{datos_macro.datos('numero1','ingrese el numero 2')}}
             {{datos_macro.datos('numero2','ingrese el numero 2')}}
         <div class="mb-3">
             <label for="operacion" class="form-label">Operacion</label>
             <select class="form-select" id="operacion" name="operacion">
                 <option value="suma">Suma</option>
-                <option value="resta">Suma</option>
-                <option value="multiplicación">multiplicación</option>
-                <option value="suma">Division</option>
+                <option value="resta">Resta</option>
+                <option value="multiplicación">Multiplicación</option>
+                <option value="division">Division</option>
             </select>
         </div>
 
-        <button type>
+        <button type ="submit" class="btn btn-primary">Calcular</button>
 
 
 
     </form>
 
+    <h1> el resultado es: {{res}}        <h1>
 {% endblock %}
