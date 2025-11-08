@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as macro %}
+
+{% block container %}
+
+<div style="width: 80%; margin: 20px auto; padding: 20px; border: 1px solid #ccc; background-color: #CCCCFF;"> 
+    
+    <h1 style="text-align: center; margin-bottom: 20px;">Pizzeria </h1>
+    
+    <form action="" method="post" novalidate>
+        
+        <div style="padding: 15px; border: 1px solid #999; margin-bottom: 20px; background-color: #B0C4DE;"> 
+            <div style="width: 100%; overflow: auto;">
+                
+                <div style="display: flex; flex-wrap: wrap; margin-bottom: 15px;">
+                    <div style="width: 25%; padding: 0 10px;">
+                        {{ macro.camposNuevos(form.nombre, style="width: 90%;", placeholder="Nombre") }}
+                    </div>
+                    <div style="width: 25%; padding: 0 10px;">
+                        {{ macro.camposNuevos(form.direccion, style="width: 90%;", placeholder="Dirección") }}
+                    </div>
+                    <div style="width: 25%; padding: 0 10px;">
+                        {{ macro.camposNuevos(form.telefono, style="width: 90%;", placeholder="Teléfono") }}
+                    </div>
+                    <div style="width: 25%; padding: 0 10px;">
+                        {{ macro.camposNuevos(form.fecha, style="width: 90%;", type="date", placeholder="Fecha de Compra") }}
+                    </div>
+                </div>
+
+                <hr style="border-top: 1px solid #888;">
+                
+                <div style="display: flex; margin-top: 15px;">
+                    
+                    <div style="width: 30%; padding: 10px; border: 1px solid #666; margin-right: 15px; background-color: #A9BCCF;"> 
+                        <label style="font-weight: bold;">Tamaño Pizza</label>
+                        <div style="margin-top: 5px;">
+                            {{ form.tamano }}
+                        </div>
+                    </div>
+                    
+                    <div style="width: 30%; padding: 10px; border: 1px solid #666; margin-right: 15px; background-color: #A9BCCF;"> 
+                        <label style="font-weight: bold;">Ingredientes</label>
+                        <div style="margin-top: 5px;">
+                            {{ macro.camposNuevos(form.jamon) }}
+                            {{ macro.camposNuevos(form.pina) }}
+                            {{ macro.camposNuevos(form.champ) }}
+                        </div>
+                    </div>
+
+                    <div style="width: 35%; padding-left: 10px;">
+                        {{ macro.camposNuevos(form.numPizzas, style="width: 50%;", placeholder="Num. de Pizzas") }}
+                        
+                        <button type="submit" name="action" value="agregar" style="padding: 8px 15px; background-color: #6c757d; color: white; border: none; cursor: pointer; margin-top: 15px;">Agregar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div style="padding: 15px; border: 1px solid #999; margin-bottom: 20px; background-color: #B0C4DE;">
+            <div style="width: 100%;">
+                <table style="width: 100%; border-collapse: collapse; background-color: #AAAAAA;">
+                    <thead>
+                        <tr style="border: 1px solid #333;">
+                            <th style="padding: 8px; border: 1px solid #333;">*</th> 
+                            <th style="padding: 8px; border: 1px solid #333;">Tamaño</th>
+                            <th style="padding: 8px; border: 1px solid #333;">Ingredientes</th>
+                            <th style="padding: 8px; border: 1px solid #333;">Num. Pizzas</th>
+                            <th style="padding: 8px; border: 1px solid #333;">SubTotal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detalle-pedido">
+                        {% if pizzas_en_pedido %}
+                            {% for index, pizza in pizzas_en_pedido %}
+                            <tr style="border: 1px solid #333;">
+                                <td style="padding: 8px; border: 1px solid #333;"><input type="checkbox" name="pizza_a_quitar" value="{{ index }}"></td>
+                                <td style="padding: 8px; border: 1px solid #333;">{{ pizza.tamano }}</td>
+                                <td style="padding: 8px; border: 1px solid #333;">{{ pizza.ingredientes }}</td>
+                                <td style="padding: 8px; border: 1px solid #333;">{{ pizza.num_pizzas }}</td>
+                                <td style="padding: 8px; border: 1px solid #333;">${{ pizza.subtotal }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr style="border: 1px solid #333;">
+                                <td colspan="5" style="padding: 8px; text-align: center; border: 1px solid #333;">Aún no hay pizzas en el pedido.</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="text-align: center; margin-top: 15px;">
+                <button type="submit" name="action" value="quitar" style="padding: 8px 15px; background-color: #dc3545; color: white; border: none; cursor: pointer; margin-right: 10px;">Quitar</button>
+                <button type="submit" name="action" value="terminar" style="padding: 8px 15px; background-color: #28a745; color: white; border: none; cursor: pointer;">Terminar</button>
+            </div>
+        </div>
+        
+    </form>
+
+    <div style="width: 100%;">
+    <div style="padding: 15px; border: 1px solid #666; background-color: #AAAAAA;">
+        <h5 style="margin-bottom: 10px;">Ventas del día</h5>
+        
+        {% if ventas_del_dia %}
+            {% for venta in ventas_del_dia %}
+                <p style="margin: 5px 0;"><strong>{{ venta.nombre }} total ${{ venta.total }}</strong></p>
+            {% endfor %}
+        {% else %}
+            <p style="margin: 5px 0;">Aún no hay ventas registradas.</p>
+        {% endif %}
+        <hr style="border-top: 1px solid #888;">
+        <p style="font-size: 1.2em; font-weight: bold;">Ventas totales del día: ${{ total_general_dia | default(0) }}</p>
+    </div>
+</div>
+
+</div>
+
+{% endblock %}
