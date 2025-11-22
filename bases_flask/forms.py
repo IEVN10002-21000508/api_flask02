@@ -51,7 +51,7 @@ class PizzaForm(Form):
     telefono = StringField('Teléfono', [
         validators.DataRequired(message='El campo es requerido')
     ])
-    fecha = DateField('Fecha de Compra (aaaa-mm-dd)', [
+    fecha = DateField('Fecha de Compra', [
         validators.DataRequired(message='El campo es requerido')
     ], format='%Y-%m-%d')
     

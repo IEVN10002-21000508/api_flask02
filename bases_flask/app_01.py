@@ -112,10 +112,8 @@ def pizzeria():
     mensaje_confirmacion = None
     temp_pedido = pizzas_en_pedido.copy() 
 
-
     response = make_response(render_template('pizzeria.html',
         form=pizza_clas,pizzas_en_pedido=list(enumerate(pizzas_en_pedido)), ventas_del_dia=ventas_del_dia, total_general_dia=total_general_dia,mensaje_confirmacion=mensaje_confirmacion))
-    
 
     if request.method == 'POST':
         action = request.form.get('action') 
@@ -145,7 +143,7 @@ def pizzeria():
                 
                 num_pizzas = pizza_clas.numPizzas.data
                 subtotal = costo_pizza_unitario * num_pizzas
-                
+                #Cokie 1!!!!!!!
                 nueva_pizza = {
                     'tamano': tamano_key.capitalize(),
                     'ingredientes': ', '.join(ingredientes_list) if ingredientes_list else 'Ninguno',
@@ -162,7 +160,7 @@ def pizzeria():
                 else:
                     total_pedido = sum(pizza['subtotal'] for pizza in pizzas_en_pedido)
                     mensaje_confirmacion = f'El costo total del pedido para {pizza_clas.nombre.data} es de ${total_pedido}.'
-
+                    #Cokie 2!!!!!!
                     nueva_venta = {
                         'nombre': pizza_clas.nombre.data,
                         'direccion': pizza_clas.direccion.data,
@@ -172,18 +170,16 @@ def pizzeria():
                     }
                     
                     ventas_del_dia.append(nueva_venta)
-                    temp_pedido = [] # Limpia el pedido temporal
+                    temp_pedido = [] 
 
         total_general_dia = sum(venta.get('total', 0) for venta in ventas_del_dia)
         
         response = make_response(render_template('pizzeria.html',
             form=pizza_clas, pizzas_en_pedido=list(enumerate(temp_pedido)), ventas_del_dia=ventas_del_dia, total_general_dia=total_general_dia, mensaje_confirmacion=mensaje_confirmacion))
         
-        # Guardado de Cookies (Patrón alumnos)
         response.set_cookie('cookie_ventas', json.dumps(ventas_del_dia))
         response.set_cookie('cookie_pedido', json.dumps(temp_pedido))
 
-    # Retorno Final
     return response
 
 @app.route('/hola')
